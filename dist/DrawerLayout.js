@@ -363,8 +363,8 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         var isMainMoveEnabled = true;
         var moveMainExtraByValue = -15;
         var totalMainMovement = 0;
-        if (isViewMoveEnabled) {
-          totalMainMovement = drawerWidth + moveViewExtraByValue;
+        if (isMainMoveEnabled) {
+          totalMainMovement = drawerWidth + moveMainExtraByValue;
         }
         if (this.getDrawerPosition() === 'left') {
           drawerOutputRange = [-drawerWidth, 0];
@@ -397,13 +397,13 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
           _extends(
             { style: { flex: 1, backgroundColor: 'transparent' } },
             this._panResponder.panHandlers,
-            { __source: { fileName: _jsxFileName, lineNumber: 196 } },
+            { __source: { fileName: _jsxFileName, lineNumber: 195 } },
           ),
           _react2.default.createElement(
             _reactNative.Animated.View,
             {
               style: [styles.main, animatedMainStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 200 },
+              __source: { fileName: _jsxFileName, lineNumber: 199 },
             },
             this.props.children,
           ),
@@ -412,12 +412,12 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
             {
               pointerEvents: pointerEvents,
               onPress: this._onOverlayClick,
-              __source: { fileName: _jsxFileName, lineNumber: 203 },
+              __source: { fileName: _jsxFileName, lineNumber: 202 },
             },
             _react2.default.createElement(_reactNative.Animated.View, {
               pointerEvents: pointerEvents,
               style: [styles.overlay, animatedOverlayStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 207 },
+              __source: { fileName: _jsxFileName, lineNumber: 206 },
             }),
           ),
           _react2.default.createElement(
@@ -425,7 +425,7 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
             {
               accessibilityViewIsModal: accessibilityViewIsModal,
               style: [styles.drawer, dynamicDrawerStyles, animatedDrawerStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 212 },
+              __source: { fileName: _jsxFileName, lineNumber: 211 },
             },
             this.props.renderNavigationView(),
           ),
