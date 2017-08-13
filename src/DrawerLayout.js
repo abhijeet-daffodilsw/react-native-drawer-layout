@@ -36,7 +36,7 @@ export type PropType = {
   useNativeAnimations?: boolean,
   moveView?: boolean,
   spaceOnOpen?: number,
-  viewOpacity?: number,
+  viewOpacity: number,
 };
 
 export type StateType = {
@@ -76,7 +76,7 @@ export default class DrawerLayout extends Component {
     useNativeAnimations: false,
     moveView: false,
     spaceOnOpen: 0,
-    viewOpacity: 0.7,
+    viewOpacity: 0,
   };
 
   static positions = {
@@ -158,18 +158,18 @@ export default class DrawerLayout extends Component {
     /* Drawer styles */
     let drawerOutputRange;
     let mainOutputRange;
-    let viewMovement = 0;
+    let viewDisplacement = 0;
 
     if (moveView) {
-      viewMovement = drawerWidth + spaceOnOpen;
+      viewDisplacement = drawerWidth + spaceOnOpen;
     }
 
     if (this.getDrawerPosition() === 'left') {
       drawerOutputRange = [-drawerWidth, 0];
-      mainOutputRange = [0, viewMovement];
+      mainOutputRange = [0, viewDisplacement];
     } else {
       drawerOutputRange = [drawerWidth, 0];
-      mainOutputRange = [0, -viewMovement];
+      mainOutputRange = [0, -viewDisplacement];
     }
 
     const drawerTranslateX = openValue.interpolate({
@@ -193,7 +193,7 @@ export default class DrawerLayout extends Component {
     /* Overlay styles */
     const overlayOpacity = openValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, viewOpacity],
+      outputRange: [0, 1 - viewOpacity],
       extrapolate: 'clamp',
     });
 

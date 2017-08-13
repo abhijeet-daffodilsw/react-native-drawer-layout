@@ -363,16 +363,16 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         };
         var drawerOutputRange = void 0;
         var mainOutputRange = void 0;
-        var viewMovement = 0;
+        var viewDisplacement = 0;
         if (moveView) {
-          viewMovement = drawerWidth + spaceOnOpen;
+          viewDisplacement = drawerWidth + spaceOnOpen;
         }
         if (this.getDrawerPosition() === 'left') {
           drawerOutputRange = [-drawerWidth, 0];
-          mainOutputRange = [0, viewMovement];
+          mainOutputRange = [0, viewDisplacement];
         } else {
           drawerOutputRange = [drawerWidth, 0];
-          mainOutputRange = [0, -viewMovement];
+          mainOutputRange = [0, -viewDisplacement];
         }
         var drawerTranslateX = openValue.interpolate({
           inputRange: [0, 1],
@@ -392,7 +392,7 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         };
         var overlayOpacity = openValue.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, viewOpacity],
+          outputRange: [0, 1 - viewOpacity],
           extrapolate: 'clamp',
         });
         var animatedOverlayStyles = { opacity: overlayOpacity };
@@ -457,7 +457,7 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
   useNativeAnimations: false,
   moveView: false,
   spaceOnOpen: 0,
-  viewOpacity: 0.7,
+  viewOpacity: 0,
 }, _class.positions = { Left: 'left', Right: 'right' }, _temp);
 exports.default = DrawerLayout;
 
