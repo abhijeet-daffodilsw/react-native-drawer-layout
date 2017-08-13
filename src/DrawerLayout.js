@@ -143,29 +143,51 @@ export default class DrawerLayout extends Component {
     };
 
     /* Drawer styles */
-    let outputRange;
+    let drawerOutputRange;
+    let mainOutputRange;
+    let isMainMoveEnabled = true;
+    let moveMainExtraByValue =  -15;
+    let totalMainMovement = 0;
+
+    if (isViewMoveEnabled) {
+      totalMainMovement = drawerWidth + moveViewExtraByValue;
+    }
 
     if (this.getDrawerPosition() === 'left') {
-      outputRange = [-drawerWidth, 0];
+      drawerOutputRange = [-drawerWidth, 0];
+      mainOutputRange = [0, totalMainMovement];
     } else {
-      outputRange = [drawerWidth, 0];
+      drawerOutputRange = [drawerWidth, 0];
+      mainOutputRange = [0, -totalMainMovement];
     }
 
     const drawerTranslateX = openValue.interpolate({
       inputRange: [0, 1],
-      outputRange,
+      drawerOutputRange,
       extrapolate: 'clamp',
     });
     const animatedDrawerStyles = {
       transform: [{ translateX: drawerTranslateX }],
     };
 
-    /* Overlay styles */
-    const overlayOpacity = openValue.interpolate({
+    const mainTranslateX = openValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 0.7],
+      mainOutputRange,
       extrapolate: 'clamp',
     });
+    const animatedMainStyles = {
+      transform: [{ translateX: mainTranslateX }],
+    };
+
+    /* Overlay styles */
+    const overlayOpacity = 0; // Removing overlay opacity
+
+    // openValue.interpolate({
+    //   inputRange: [0, 1],
+    //   outputRange: [0, 0.7],
+    //   extrapolate: 'clamp',
+    // });
+
     const animatedOverlayStyles = { opacity: overlayOpacity };
     const pointerEvents = drawerShown ? 'auto' : 'none';
 
@@ -175,7 +197,7 @@ export default class DrawerLayout extends Component {
         style={{ flex: 1, backgroundColor: 'transparent' }}
         {...this._panResponder.panHandlers}
       >
-        <Animated.View style={styles.main}>
+        <Animated.View style={[styles.main, animatedMainStyles]}>
           {this.props.children}
         </Animated.View>
         <TouchableWithoutFeedback
