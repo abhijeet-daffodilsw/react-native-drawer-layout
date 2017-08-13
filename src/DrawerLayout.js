@@ -34,6 +34,9 @@ export type PropType = {
   renderNavigationView: () => any,
   statusBarBackgroundColor?: string,
   useNativeAnimations?: boolean,
+  moveView?: boolean,
+  spaceOnOpen?: number,
+  viewOpacity?: number,
 };
 
 export type StateType = {
@@ -71,6 +74,9 @@ export default class DrawerLayout extends Component {
     drawerWidth: 0,
     drawerPosition: 'left',
     useNativeAnimations: false,
+    moveView: false,
+    spaceOnOpen: 0,
+    viewOpacity: 0.7,
   };
 
   static positions = {
@@ -129,7 +135,14 @@ export default class DrawerLayout extends Component {
   render() {
     const { accessibilityViewIsModal, drawerShown, openValue } = this.state;
 
-    const { drawerBackgroundColor, drawerWidth, drawerPosition } = this.props;
+    const {
+      drawerBackgroundColor,
+      drawerWidth,
+      drawerPosition,
+      moveView,
+      spaceOnOpen,
+      viewOpacity,
+    } = this.props;
 
     /**
     * We need to use the "original" drawer position here
@@ -145,25 +158,23 @@ export default class DrawerLayout extends Component {
     /* Drawer styles */
     let drawerOutputRange;
     let mainOutputRange;
-    let isMainMoveEnabled = true;
-    let moveMainExtraByValue = -15;
-    let totalMainMovement = 0;
+    let viewMovement = 0;
 
-    if (isMainMoveEnabled) {
-      totalMainMovement = drawerWidth + moveMainExtraByValue;
+    if (moveView) {
+      viewMovement = drawerWidth + spaceOnOpen;
     }
 
     if (this.getDrawerPosition() === 'left') {
       drawerOutputRange = [-drawerWidth, 0];
-      mainOutputRange = [0, totalMainMovement];
+      mainOutputRange = [0, viewMovement];
     } else {
       drawerOutputRange = [drawerWidth, 0];
-      mainOutputRange = [0, -totalMainMovement];
+      mainOutputRange = [0, -viewMovement];
     }
 
     const drawerTranslateX = openValue.interpolate({
       inputRange: [0, 1],
-      drawerOutputRange,
+      outputRange: drawerOutputRange,
       extrapolate: 'clamp',
     });
     const animatedDrawerStyles = {
@@ -172,7 +183,7 @@ export default class DrawerLayout extends Component {
 
     const mainTranslateX = openValue.interpolate({
       inputRange: [0, 1],
-      mainOutputRange,
+      outputRange: mainOutputRange,
       extrapolate: 'clamp',
     });
     const animatedMainStyles = {
@@ -180,13 +191,11 @@ export default class DrawerLayout extends Component {
     };
 
     /* Overlay styles */
-    const overlayOpacity = 0; // Removing overlay opacity
-
-    // openValue.interpolate({
-    //   inputRange: [0, 1],
-    //   outputRange: [0, 0.7],
-    //   extrapolate: 'clamp',
-    // });
+    const overlayOpacity = openValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, viewOpacity],
+      extrapolate: 'clamp',
+    });
 
     const animatedOverlayStyles = { opacity: overlayOpacity };
     const pointerEvents = drawerShown ? 'auto' : 'none';

@@ -351,7 +351,10 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         var _props = this.props,
           drawerBackgroundColor = _props.drawerBackgroundColor,
           drawerWidth = _props.drawerWidth,
-          drawerPosition = _props.drawerPosition;
+          drawerPosition = _props.drawerPosition,
+          moveView = _props.moveView,
+          spaceOnOpen = _props.spaceOnOpen,
+          viewOpacity = _props.viewOpacity;
         var dynamicDrawerStyles = {
           backgroundColor: drawerBackgroundColor,
           width: drawerWidth,
@@ -360,22 +363,20 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         };
         var drawerOutputRange = void 0;
         var mainOutputRange = void 0;
-        var isMainMoveEnabled = true;
-        var moveMainExtraByValue = -15;
-        var totalMainMovement = 0;
-        if (isMainMoveEnabled) {
-          totalMainMovement = drawerWidth + moveMainExtraByValue;
+        var viewMovement = 0;
+        if (moveView) {
+          viewMovement = drawerWidth + spaceOnOpen;
         }
         if (this.getDrawerPosition() === 'left') {
           drawerOutputRange = [-drawerWidth, 0];
-          mainOutputRange = [0, totalMainMovement];
+          mainOutputRange = [0, viewMovement];
         } else {
           drawerOutputRange = [drawerWidth, 0];
-          mainOutputRange = [0, -totalMainMovement];
+          mainOutputRange = [0, -viewMovement];
         }
         var drawerTranslateX = openValue.interpolate({
           inputRange: [0, 1],
-          drawerOutputRange: drawerOutputRange,
+          outputRange: drawerOutputRange,
           extrapolate: 'clamp',
         });
         var animatedDrawerStyles = {
@@ -383,13 +384,17 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
         };
         var mainTranslateX = openValue.interpolate({
           inputRange: [0, 1],
-          mainOutputRange: mainOutputRange,
+          outputRange: mainOutputRange,
           extrapolate: 'clamp',
         });
         var animatedMainStyles = {
           transform: [{ translateX: mainTranslateX }],
         };
-        var overlayOpacity = 0;
+        var overlayOpacity = openValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, viewOpacity],
+          extrapolate: 'clamp',
+        });
         var animatedOverlayStyles = { opacity: overlayOpacity };
         var pointerEvents = drawerShown ? 'auto' : 'none';
         return _react2.default.createElement(
@@ -397,13 +402,13 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
           _extends(
             { style: { flex: 1, backgroundColor: 'transparent' } },
             this._panResponder.panHandlers,
-            { __source: { fileName: _jsxFileName, lineNumber: 195 } },
+            { __source: { fileName: _jsxFileName, lineNumber: 204 } },
           ),
           _react2.default.createElement(
             _reactNative.Animated.View,
             {
               style: [styles.main, animatedMainStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 199 },
+              __source: { fileName: _jsxFileName, lineNumber: 208 },
             },
             this.props.children,
           ),
@@ -412,12 +417,12 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
             {
               pointerEvents: pointerEvents,
               onPress: this._onOverlayClick,
-              __source: { fileName: _jsxFileName, lineNumber: 202 },
+              __source: { fileName: _jsxFileName, lineNumber: 211 },
             },
             _react2.default.createElement(_reactNative.Animated.View, {
               pointerEvents: pointerEvents,
               style: [styles.overlay, animatedOverlayStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 206 },
+              __source: { fileName: _jsxFileName, lineNumber: 215 },
             }),
           ),
           _react2.default.createElement(
@@ -425,7 +430,7 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
             {
               accessibilityViewIsModal: accessibilityViewIsModal,
               style: [styles.drawer, dynamicDrawerStyles, animatedDrawerStyles],
-              __source: { fileName: _jsxFileName, lineNumber: 211 },
+              __source: { fileName: _jsxFileName, lineNumber: 220 },
             },
             this.props.renderNavigationView(),
           ),
@@ -450,6 +455,9 @@ var DrawerLayout = (_temp = _class = (function(_Component) {
   drawerWidth: 0,
   drawerPosition: 'left',
   useNativeAnimations: false,
+  moveView: false,
+  spaceOnOpen: 0,
+  viewOpacity: 0.7,
 }, _class.positions = { Left: 'left', Right: 'right' }, _temp);
 exports.default = DrawerLayout;
 
