@@ -146,11 +146,11 @@ export default class DrawerLayout extends Component {
     let drawerOutputRange;
     let mainOutputRange;
     let isMainMoveEnabled = true;
-    let moveMainExtraByValue =  -15;
+    let moveMainExtraByValue = -15;
     let totalMainMovement = 0;
 
-    if (isViewMoveEnabled) {
-      totalMainMovement = drawerWidth + moveViewExtraByValue;
+    if (isMainMoveEnabled) {
+      totalMainMovement = drawerWidth + moveMainExtraByValue;
     }
 
     if (this.getDrawerPosition() === 'left') {
@@ -190,7 +190,6 @@ export default class DrawerLayout extends Component {
 
     const animatedOverlayStyles = { opacity: overlayOpacity };
     const pointerEvents = drawerShown ? 'auto' : 'none';
-
 
     return (
       <View
